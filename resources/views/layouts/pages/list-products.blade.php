@@ -11,6 +11,12 @@
                         <li class="breadcrumb-item active">List Products</li>
                   </ol>
             </nav>
+            @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  {{ session('success') }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
       </div>
       <!-- End Page Title -->
       <section class="section">
@@ -58,10 +64,16 @@
                                                                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuClickableOutside">
                                                                         <li class="actions-drop"><a class="dropdown-item" href="#">Product Details</a></li>
                                                                         <li class="actions-drop"><a class="dropdown-item" href="#">Duplicate Product</a></li>
-                                                                        <li class="actions-drop"><a class="dropdown-item" href="#">Edit Product</a></li>
+                                                                        <li class="actions-drop"><a class="dropdown-item" href="{{ route('editProducts', ['id' => $product->id]) }}">Edit Product</a></li>
                                                                         <li class="actions-drop"><a class="dropdown-item" href="#">View Product</a></li>
                                                                         <li class="actions-drop"><a class="dropdown-item" href="#">Print Barcode</a></li>
-                                                                        <li class="actions-drop"><a class="dropdown-item" href="#">Delete Product</a></li>
+                                                                        <!-- <li class="actions-drop"><a class="dropdown-item" href="#">Delete Product</a></li> -->
+                                                                        <form action="{{ route('deleteProducts', ['id' => $product->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                                                                              @csrf
+                                                                              @method('DELETE')
+                                                                              <li class="actions-drop"><button type="submit" class="dropdown-item">Delete Product</button></li>
+                                                                        </form>
+
                                                                   </ul>
                                                             </div>
                                                       </td>

@@ -8,29 +8,21 @@
             <nav>
                   <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Product</a></li>
-                        <li class="breadcrumb-item active">Add Products</li>
+                        <li class="breadcrumb-item active">Update Products</li>
                   </ol>
             </nav>
       </div>
       <!-- End Page Title -->
       <section class="section">
             <div class="row">
-                  <form class="products" action="{{ route('addProducts') }}" method="POST" enctype="multipart/form-data">
-                        @if ($errors->any())
-                        <div class="alert alert-danger col-lg-8">
-                              <ul>
-                                    @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                    @endforeach
-                              </ul>
-                        </div>
-                        @endif
+                  <form class="products" action="{{ route('updateProducts',['id' => $product->id]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
+                        @method('PUT')
                         <div class="d-flex justify-content-between">
                               <div class="col-lg-8">
                                     <div class="card">
                                           <div class="card-body">
-                                                <h5 class="card-title">Add Products</h5>
+                                                <h5 class="card-title">Update Products</h5>
                                                 <div class="row mb-3">
                                                       <label class="col-sm-2 col-form-label">Product Type <span>*</span></label>
                                                       <div class="col-sm-10 tt-select">
@@ -44,13 +36,13 @@
                                                 <div class="row mb-3">
                                                       <label for="product_name" class="col-sm-2 col-form-label">Product Name <span>*</span></label>
                                                       <div class="col-sm-10">
-                                                            <input type="text" class="form-control" name="product_name" placeholder="Product Name">
+                                                            <input type="text" class="form-control" name="product_name" value="{{ old('product_name', $product->product_name) }}">
                                                       </div>
                                                 </div>
                                                 <div class="row mb-3">
                                                       <label for="product_code" class="col-sm-2 col-form-label">Product Code <span>*</span></label>
                                                       <div class="col-sm-10">
-                                                            <input type="text" class="form-control" name="product_code" placeholder="Product Code">
+                                                            <input type="text" class="form-control" name="product_code" value="{{ old('product_code', $product->product_code) }}">
                                                       </div>
                                                 </div>
                                                 <div class="row mb-3">
@@ -69,14 +61,14 @@
                                                       <div class="col-sm-10 tt-select">
                                                             <select class="form-select" name="category" aria-label="Default select example">
                                                                   @foreach($categories as $category)
-                                                                  <option value="{{ $category->category_slug }}">
+                                                                  <option value="{{ $category->category_slug }}"
+                                                                        {{ old('category', $product->category) == $category->category_slug ? 'selected' : '' }}>
                                                                         {{ $category->category_name }}
                                                                   </option>
                                                                   @endforeach
                                                             </select>
                                                       </div>
                                                 </div>
-
                                                 <div class="row mb-3">
                                                       <label class="col-sm-2 col-form-label">Sub Category</label>
                                                       <div class="col-sm-10 tt-select">
@@ -135,37 +127,45 @@
                                                 <div class="row mb-3">
                                                       <label for="product_price" class="col-sm-2 col-form-label">Product Price <span>*</span></label>
                                                       <div class="col-sm-10">
-                                                            <input type="number" class="form-control" name="product_price" placeholder="Product Price">
+                                                            <input type="number" class="form-control" name="product_price" value="{{ old('product_price', $product->product_price) }}">
                                                       </div>
                                                 </div>
                                                 <div class="row mb-3">
                                                       <label for="discount" class="col-sm-2 col-form-label">Product Discount</label>
                                                       <div class="col-sm-10">
-                                                            <input type="number" class="form-control" name="discount" placeholder="Product Discount">
+                                                            <input type="number" class="form-control" name="discount" value="{{ old('discount', $product->discount) }}">
                                                       </div>
                                                 </div>
                                                 <div class="row mb-3">
                                                       <label for="stock" class="col-sm-2 col-form-label">Quantity <span>*</span></label>
                                                       <div class="col-sm-10">
-                                                            <input type="number" class="form-control" name="stock" placeholder="Quantity">
+                                                            <input type="number" class="form-control" name="stock" value="{{ old('stock', $product->stock) }}">
                                                       </div>
                                                 </div>
                                                 <div class="row mb-3">
                                                       <label for="alert_stock" class="col-sm-2 col-form-label">Quantity Alert</label>
                                                       <div class="col-sm-10">
-                                                            <input type="number" class="form-control" name="alert_stock" placeholder="Quantity Alert">
+                                                            <input type="number" class="form-control" name="alert_stock" value="{{ old('alert_stock', $product->alert_stock) }}">
                                                       </div>
                                                 </div>
                                                 <div class="row mb-3">
                                                       <label for="product_image" class="col-sm-2 col-form-label">Product Image</label>
                                                       <div class="col-sm-10">
-                                                            <input class="form-control" type="file" id="formFile" name="product_image" placeholder="Product Image">
+                                                            <input class="form-control" type="file" id="formFile" name="product_image">
+                                                            @if($product->product_image)
+                                                            <img src="{{ asset('storage/' . $product->product_image) }}" alt="Current Image" width="100">
+                                                            @endif
                                                       </div>
                                                 </div>
                                                 <div class="row mb-3">
                                                       <label for="product_gallery_image" class="col-sm-2 col-form-label">Product Gallery</label>
                                                       <div class="col-sm-10">
                                                             <input class="form-control" type="file" id="formFile" name="product_gallery_image[]" multiple>
+                                                            @if(!empty($product->product_gallery_image))
+                                                                  @foreach($product->product_gallery_image as $galleryImage)
+                                                                        <img src="{{ asset('storage/' . $galleryImage) }}" alt="Gallery Image" width="100">
+                                                                  @endforeach
+                                                            @endif
                                                       </div>
                                                 </div>
                                                 <div class="row mb-3">
@@ -195,7 +195,7 @@
                                                       </div>
                                                 </div>
                                                 <div class="mb-3 d-flex justify-content-end">
-                                                      <button type="submit" class="btn btn-primary">Submit Form</button>
+                                                      <button type="submit" class="btn btn-primary">Update Product</button>
                                                 </div>
                                           </div>
                                     </div>

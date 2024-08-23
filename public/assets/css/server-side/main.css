@@ -131,6 +131,12 @@ main .container {
       outline-width: 0px;
 }
 
+.main .btn:hover,
+.main .form-select:hover,
+.main .form-control:hover {
+      box-shadow: 0 0 2px 0 #0016a583;
+}
+
 .main form label span {
       color: var(--Red);
       font-weight: 600;
@@ -199,12 +205,6 @@ main .container {
       cursor: pointer;
 }
 
-.select-selected:focus {
-      /* outline: none; */
-      box-shadow: 0 0 2px 0 #0016a583;
-      /* outline-width: 0px; */
-}
-
 .select-items {
       position: absolute;
       background-color: var(--light);
@@ -223,6 +223,14 @@ main .container {
 .same-as-selected {
       background-color: var(--Navy);
 }
+
+/* input:invalid {
+      border-color: red;
+}
+
+input:valid {
+      border-color: green;
+} */
 
 /********************************action button********************************* */
 .actions-drop {

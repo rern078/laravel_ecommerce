@@ -10,6 +10,7 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
+        'category_id',
         'product_type',
         'product_name',
         'product_code',
@@ -30,8 +31,12 @@ class Product extends Model
         'product_details_invoice',
         'status'
     ];
-    public function product()
+    public function products()
     {
         return $this->belongsTo(Product::class);
+    }
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

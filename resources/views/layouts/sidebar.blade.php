@@ -11,10 +11,10 @@
              <!-- End Dashboard Nav -->
 
              <li class="nav-item">
-                   <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                   <a class="nav-link collapsed" data-bs-target="#productss" data-bs-toggle="collapse" href="#">
                          <i class="bi bi-menu-button-wide"></i><span>Products</span><i class="bi bi-chevron-down ms-auto"></i>
                    </a>
-                   <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                   <ul id="productss" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                          <li>
                                <a href="{{ route('listProducts') }}">
                                      <i class="bi bi-circle"></i><span>List Products</span>
@@ -26,7 +26,25 @@
                                </a>
                          </li>
                    </ul>
-             </li><!-- End Components Nav -->
+             </li>
+
+             <li class="nav-item">
+                   <a class="nav-link collapsed" data-bs-target="#categories" data-bs-toggle="collapse" href="#">
+                         <i class="bi bi-menu-button-wide"></i><span>Category</span><i class="bi bi-chevron-down ms-auto"></i>
+                   </a>
+                   <ul id="categories" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                         <li>
+                               <a href="{{ route('listCategories') }}">
+                                     <i class="bi bi-circle"></i><span>List Category</span>
+                               </a>
+                         </li>
+                         <li>
+                               <a href="{{ route('categories') }}">
+                                     <i class="bi bi-circle"></i><span>Add Category</span>
+                               </a>
+                         </li>
+                   </ul>
+             </li>
 
              <li class="nav-item">
                    <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">

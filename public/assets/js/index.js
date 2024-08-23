@@ -14,27 +14,27 @@ document.addEventListener('DOMContentLoaded', function () {
             ['clean']                                         // remove formatting button
       ];
 
-      document.querySelector('form').onsubmit = function () {
-            document.querySelector('#product-description').value = quill.root.innerHTML;
-      };
-
-      document.querySelector('form').onsubmit = function () {
-            document.querySelector('#product-description-invoice').value = quill.root.innerHTML;
-      };
-
-      var quill = new Quill('#editor-container', {
-            theme: 'snow',  // or 'bubble'
-            modules: {
-                  toolbar: toolbarOptions
-            }
-      });
-      var quill = new Quill('#editor-container-invoice', {
-            theme: 'snow',  // or 'bubble'
+      var quillProduct = new Quill('#editor-container', {
+            theme: 'snow',
             modules: {
                   toolbar: toolbarOptions
             }
       });
 
+      var quillProductInvoice = new Quill('#editor-container-invoice', {
+            theme: 'snow',
+            modules: {
+                  toolbar: toolbarOptions
+            }
+      });
+
+      document.querySelector('form').onsubmit = function () {
+            var productDetails = quillProduct.root.innerHTML;
+            var productDetailsInvoice = quillProductInvoice.root.innerHTML;
+
+            document.querySelector('#product-description').value = productDetails;
+            document.querySelector('#product-description-invoice').value = productDetailsInvoice;
+      };
 });
 
 // datatable 
@@ -42,14 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
       const dataTable = new simpleDatatables.DataTable("#datatable");
 });
 
-// $(document).ready(function () {
-//       $('#datatable').DataTable({
-//             dom: 'Bfrtip',
-//             buttons: [
-//                   'copy', 'csv', 'excel', 'pdf', 'print'
-//             ]
-//       });
-// });
 $(document).ready(function () {
       $('#datatable').DataTable({
             dom: 'Bfrtip',
@@ -59,3 +51,19 @@ $(document).ready(function () {
             responsive: true
       });
 });
+
+function previewImage(event) {
+      const imagePreview = document.getElementById('imagePreview');
+      const file = event.target.files[0];
+
+      if (file) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                  imagePreview.src = reader.result;
+                  imagePreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+      } else {
+            imagePreview.style.display = 'none';
+      }
+}

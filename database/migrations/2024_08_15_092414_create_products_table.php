@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('set null');
             $table->string('product_type', 50);
             $table->string('product_name', 200);
             $table->string('product_code', 20)->unique();
@@ -41,6 +42,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        // Schema::dropIfExists('products');
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropForeign(['category_id']);
+            $table->dropColumn('category_id');
+        });
     }
 };
