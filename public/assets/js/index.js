@@ -67,3 +67,25 @@ function previewImage(event) {
             imagePreview.style.display = 'none';
       }
 }
+
+function previewImages(event) {
+      var files = event.target.files;
+      var previewContainer = document.getElementById('imagePreviewContainer');
+      previewContainer.innerHTML = ''; // Clear previous previews
+
+      if (files) {
+            Array.from(files).forEach(file => {
+                  var reader = new FileReader();
+                  reader.onload = function (e) {
+                        var img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.alt = 'Selected Image';
+                        img.width = 100;
+                        img.style.marginRight = '10px';
+                        img.style.marginTop = '10px';
+                        previewContainer.appendChild(img);
+                  };
+                  reader.readAsDataURL(file);
+            });
+      }
+}

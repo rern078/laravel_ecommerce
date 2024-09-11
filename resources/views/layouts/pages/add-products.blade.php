@@ -49,18 +49,20 @@
                                                 </div>
                                                 <div class="row mb-3">
                                                       <label for="product_code" class="col-sm-2 col-form-label">Product Code <span>*</span></label>
-                                                      <div class="col-sm-10">
-                                                            <input type="text" class="form-control" name="product_code" placeholder="Product Code">
+                                                      <div class="col-sm-10 randoming">
+                                                            {{-- <label class="randam_code"><i class="bi bi-shuffle"></i></label> --}}
+                                                            <input type="text" class="form-control product_code" name="product_code" placeholder="Product Code">
                                                       </div>
                                                 </div>
                                                 <div class="row mb-3">
                                                       <label class="col-sm-2 col-form-label">Brand</label>
                                                       <div class="col-sm-10 tt-select">
                                                             <select class="form-select" name="brand" aria-label="Default select example">
-                                                                  <option selected>Select Brand</option>
-                                                                  <option value="1">Brand1</option>
-                                                                  <option value="2">Brand2</option>
-                                                                  <option value="3">Brand3</option>
+                                                                  @foreach($brands as $brand)
+                                                                  <option value="{{ $brand->brand_slug }}">
+                                                                        {{ $brand->brand_name }}
+                                                                  </option>
+                                                                  @endforeach
                                                             </select>
                                                       </div>
                                                 </div>
@@ -81,10 +83,11 @@
                                                       <label class="col-sm-2 col-form-label">Sub Category</label>
                                                       <div class="col-sm-10 tt-select">
                                                             <select class="form-select" name="sub_category" aria-label="Default select example">
-                                                                  <option selected>Select Sub Category</option>
-                                                                  <option value="1">Scategory1</option>
-                                                                  <option value="2">Scategory2</option>
-                                                                  <option value="3">Scategory3</option>
+                                                                  @foreach($subcategories as $subcategory)
+                                                                  <option value="{{ $subcategory->subcategory_slug }}">
+                                                                        {{ $subcategory->subcategory_name }}
+                                                                  </option>
+                                                                  @endforeach
                                                             </select>
                                                       </div>
                                                 </div>
@@ -159,13 +162,15 @@
                                                 <div class="row mb-3">
                                                       <label for="product_image" class="col-sm-2 col-form-label">Product Image</label>
                                                       <div class="col-sm-10">
-                                                            <input class="form-control" type="file" id="formFile" name="product_image" placeholder="Product Image">
+                                                            <input class="form-control" type="file" id="formFile" name="product_image" accept="image/*" onchange="previewImage(event)">
+                                                            <img id="imagePreview" src="" alt="Current Image" width="100" style="display:none; margin-top: 10px;">
                                                       </div>
                                                 </div>
                                                 <div class="row mb-3">
                                                       <label for="product_gallery_image" class="col-sm-2 col-form-label">Product Gallery</label>
                                                       <div class="col-sm-10">
-                                                            <input class="form-control" type="file" id="formFile" name="product_gallery_image[]" multiple>
+                                                            <input class="form-control" type="file" id="formFile" name="product_gallery_image[]" multiple accept="image/*" onchange="previewImages(event)">
+                                                            <img id="imagePreviewContainer" src="" width="100" style=" margin-top: 10px;">
                                                       </div>
                                                 </div>
                                                 <div class="row mb-3">

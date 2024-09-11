@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,7 +21,9 @@ class AdminController extends Controller
     public function products()
     {
         $categories = Category::all();
-        return view('layouts.pages.add-products', compact('categories'));
+        $brands = Brand::all();
+        $subcategories = Subcategory::all();
+        return view('layouts.pages.add-products', compact('categories', 'brands', 'subcategories'));
     }
 
     public function listProducts()
@@ -78,8 +82,10 @@ class AdminController extends Controller
     {
         $product = Product::findOrFail($id);
         $categories = Category::all();
+        $brands = Brand::all();
+        $subcategories = Subcategory::all();
         $product->product_gallery_image = json_decode($product->product_gallery_image, true);
-        return view('/layouts/pages/edit-products', compact('product', 'categories'));
+        return view('/layouts/pages/edit-products', compact('product', 'categories', 'brands', 'subcategories'));
     }
 
     public function updateProducts(Request $request, $id)
@@ -245,5 +251,127 @@ class AdminController extends Controller
         }
         $category->delete();
         return redirect('/list-categories')->with('success', 'Category deleted successfully!');
+    }
+
+    // ******************* Sub Category *****************
+
+    public function subCategories()
+    {
+        return view('layouts.pages.add-subcategories');
+    }
+
+    public function addSubCategories(Request $request)
+    {
+        $validatedData = $request->validate([
+            'subcategory_name' => 'required|string|max:50',
+            'subcategory_slug' => 'required|string|max:200|regex:/^[a-z0-9-]+$/',
+            'subcategory_code' => 'required|numeric',
+            'meta_title' => 'nullable|string|max:200',
+            'meta_description' => 'nullable|string',
+            'meta_keyword' => 'nullable|string',
+        ]);
+        $validatedData['subcategory_slug'] = strtolower(str_replace(' ', '-', $validatedData['subcategory_slug']));
+        Subcategory::create($validatedData);
+        return redirect('/list-sub-categories')->with('success', 'Sub Category added successfully!');
+    }
+
+    public function listSubCategories()
+    {
+        $subcategories = Subcategory::all();
+        return view('layouts.pages.list-subcategories', compact('subcategories'));
+    }
+
+    public function editSubCategory($id)
+    {
+        $subcategory = Subcategory::findOrFail($id);
+        return view('/layouts/pages/edit-subcategories', compact('subcategory'));
+    }
+
+    public function updateSubCategories(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'subcategory_name' => 'required|string|max:50',
+            'subcategory_slug' => 'required|string|max:200|regex:/^[a-z0-9-]+$/',
+            'subcategory_code' => 'required|numeric',
+            'meta_title' => 'nullable|string|max:200',
+            'meta_description' => 'nullable|string',
+            'meta_keyword' => 'nullable|string',
+        ]);
+        $validatedData['subcategory_slug'] = strtolower(str_replace(' ', '-', $validatedData['subcategory_slug']));
+        $subcategory  = Subcategory::findOrFail($id);
+        $subcategory->update($validatedData);
+        return redirect('/list-sub-categories')->with('success', 'Sub Category updated successfully!');
+    }
+
+    public function deleteSubCategory($id)
+    {
+        $subcategory = Subcategory::findOrFail($id);
+        $subcategory->delete();
+        return redirect('/list-sub-categories')->with('success', 'Sub Category deleted successfully!');
+    }
+
+    // ******************* Brands *****************
+
+    public function brands()
+    {
+        return view('layouts.pages.add-brands');
+    }
+
+    public function addBrands(Request $request)
+    {
+        $validatedData = $request->validate([
+            'brand_name' => 'required|string|max:50',
+            'brand_slug' => 'required|string|max:200|regex:/^[a-z0-9-]+$/',
+            'brand_code' => 'required|string',
+            'brand_description' => 'nullable|string',
+            'brand_image' => 'nullable|image|max:2048',
+        ]);
+        $validatedData['brand_slug'] = strtolower(str_replace(' ', '-', $validatedData['brand_slug']));
+        if ($request->hasFile('brand_image')) {
+            $validatedData['brand_image'] = $request->file('brand_image')->store('images/brand', 'public');
+        }
+        Brand::create($validatedData);
+        return redirect('/list-brands')->with('success', 'Brand added successfully!');
+    }
+
+    public function listBrands()
+    {
+        $brands = Brand::all();
+        return view('layouts.pages.list-brands', compact('brands'));
+    }
+
+    public function editBrands($id)
+    {
+        $brand = Brand::findOrFail($id);
+        return view('/layouts/pages/edit-brands', compact('brand'));
+    }
+
+    public function updateBrands(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'brand_name' => 'required|string|max:50',
+            'brand_slug' => 'required|string|max:200|regex:/^[a-z0-9-]+$/',
+            'brand_code' => 'required|string',
+            'brand_description' => 'nullable|string',
+            'brand_image' => 'nullable|image|max:2048',
+        ]);
+        $validatedData['brand_slug'] = strtolower(str_replace(' ', '-', $validatedData['brand_slug']));
+        $brand  = Brand::findOrFail($id);
+        if ($request->hasFile('brand_image')) {
+            if ($brand->brand_image && Storage::disk('public')->exists($brand->brand_image)) {
+                Storage::disk('public')->delete($brand->brand_image);
+            }
+
+            $validatedData['brand_image'] = $request->file('brand_image')->store('images/brand', 'public');
+        }
+        $brand->update($validatedData);
+        return redirect('/list-brands')->with('success', 'Brand updated successfully!');
+    }
+
+    public function deleteBrands($id)
+    {
+        $brand = Brand::findOrFail($id);
+        $brand->delete();
+        return redirect('/list-brands')->with('success', 'Brand deleted successfully!');
     }
 }

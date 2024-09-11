@@ -32,7 +32,7 @@ return new class extends Migration
             $table->string('product_gallery_image', 255)->nullable();
             $table->text('product_details')->nullable();
             $table->text('product_details_invoice')->nullable();
-            $table->enum('status', ['active', 'inactive', 'out of stock'])->default('active');
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });
     }

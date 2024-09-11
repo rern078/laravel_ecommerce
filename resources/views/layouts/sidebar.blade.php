@@ -47,32 +47,40 @@
              </li>
 
              <li class="nav-item">
-                   <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-                         <i class="bi bi-journal-text"></i><span>Forms</span><i class="bi bi-chevron-down ms-auto"></i>
+                   <a class="nav-link collapsed" data-bs-target="#subcategories" data-bs-toggle="collapse" href="#">
+                         <i class="bi bi-journal-text"></i><span>Sub Category</span><i class="bi bi-chevron-down ms-auto"></i>
                    </a>
-                   <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                   <ul id="subcategories" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                          <li>
-                               <a href="forms-elements.html">
-                                     <i class="bi bi-circle"></i><span>Form Elements</span>
+                               <a href="{{ route('listSubCategories') }}">
+                                     <i class="bi bi-circle"></i><span>List Sub Category</span>
                                </a>
                          </li>
                          <li>
-                               <a href="forms-layouts.html">
-                                     <i class="bi bi-circle"></i><span>Form Layouts</span>
-                               </a>
-                         </li>
-                         <li>
-                               <a href="forms-editors.html">
-                                     <i class="bi bi-circle"></i><span>Form Editors</span>
-                               </a>
-                         </li>
-                         <li>
-                               <a href="forms-validation.html">
-                                     <i class="bi bi-circle"></i><span>Form Validation</span>
+                               <a href="{{ route('subCategories') }}">
+                                     <i class="bi bi-circle"></i><span>Add Sub Category</span>
                                </a>
                          </li>
                    </ul>
-             </li><!-- End Forms Nav -->
+             </li>
+             <li class="nav-item">
+                  <a class="nav-link collapsed" data-bs-target="#brands" data-bs-toggle="collapse" href="#">
+                        <i class="bi bi-journal-text"></i><span>Brands</span><i class="bi bi-chevron-down ms-auto"></i>
+                  </a>
+                  <ul id="brands" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        <li>
+                              <a href="{{ route('listBrands') }}">
+                                    <i class="bi bi-circle"></i><span>List Brand</span>
+                              </a>
+                        </li>
+                        <li>
+                              <a href="{{ route('brands') }}">
+                                    <i class="bi bi-circle"></i><span>Add Brand</span>
+                              </a>
+                        </li>
+                  </ul>
+            </li>
+             <!-- End Forms Nav -->
 
              <li class="nav-item">
                    <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
